@@ -8,40 +8,65 @@
 
 ## 機能
 
-- [ ] タスク追加
-- [ ] タスク編集
-- [ ] タスク削除
-- [ ] タスク完了マーク
-- [ ] タスクリスト表示
+- ✅ タスク追加
+- ✅ タスク編集
+- ✅ タスク削除
+- ✅ タスク完了マーク
+- ✅ タスクリスト表示
 
-## 画面
+## 技術スタック
 
-| パス | 画面名 | 説明 |
-|------|--------|------|
-| `/` | Home | ToDoリストのメインページ。全タスクを表示し、新規タスク追加ができる |
-| `/create` | CreateTask | 新規タスクを作成するページ |
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Database**: Vercel KV
+- **Hosting**: Vercel
+- **Language**: TypeScript
 
-## データ
+## セットアップ
 
-### Task
+1. 依存関係のインストール
+```bash
+npm install
+```
 
-| フィールド | 型 | 説明 |
-|-----------|-----|------|
-| id | string | タスクの一意の識別子 |
-| title | string | タスクのタイトル |
-| description | string | タスクの詳細説明 |
-| isCompleted | boolean | タスクの完了状態 |
-| createdAt | string | タスク作成日時 |
+2. 環境変数の設定
+```bash
+cp .env.example .env.local
+```
 
-## 認証
+`.env.local`ファイルを編集し、Vercel KVの設定を追加してください。
 
-なし
+3. 開発サーバーの起動
+```bash
+npm run dev
+```
 
----
+## 環境変数
 
-## Tech Stack
+以下の環境変数が必要です：
 
-- Framework: Next.js 14 (App Router)
-- Styling: Tailwind CSS + shadcn/ui
-- Database: Vercel KV
-- Hosting: Vercel
+```
+KV_URL=your_kv_url_here
+KV_REST_API_URL=your_kv_rest_api_url_here
+KV_REST_API_TOKEN=your_kv_rest_api_token_here
+KV_REST_API_READ_ONLY_TOKEN=your_kv_rest_api_read_only_token_here
+```
+
+Vercelにデプロイする場合は、Vercel KVストレージを作成し、自動的に環境変数が設定されます。
+
+## デプロイ
+
+Vercelにデプロイする最も簡単な方法：
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/tmn-todo-240102)
+
+## API エンドポイント
+
+- `GET /api/tasks` - すべてのタスクを取得
+- `POST /api/tasks` - 新しいタスクを作成
+- `PATCH /api/tasks/[id]` - タスクを更新
+- `DELETE /api/tasks/[id]` - タスクを削除
+
+## ライセンス
+
+MIT
