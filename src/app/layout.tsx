@@ -1,12 +1,13 @@
+import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'ToDo App',
-  description: 'シンプルで使いやすいToDoリストアプリケーション',
+  title: 'Todo App - シンプルなタスク管理',
+  description: 'シンプルで使いやすいToDoリストアプリケーション。タスクの追加、編集、削除、完了マークができます。',
+  keywords: ['todo', 'task', 'productivity', 'タスク管理', 'ToDo'],
 }
 
 interface RootLayoutProps {
@@ -17,13 +18,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <div className="min-h-screen bg-gray-50">
-          <header className="bg-white shadow-sm border-b">
-            <div className="max-w-4xl mx-auto px-4 py-4">
-              <h1 className="text-2xl font-bold text-gray-900">ToDo App</h1>
-            </div>
-          </header>
-          <main className="max-w-4xl mx-auto px-4 py-8">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+          <main className="container mx-auto px-4 py-8">
             {children}
           </main>
         </div>

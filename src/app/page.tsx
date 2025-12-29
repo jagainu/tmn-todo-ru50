@@ -1,55 +1,37 @@
 import { Suspense } from 'react'
-import { TaskList } from '@/components/task-list'
-import { AddTaskForm } from '@/components/add-task-form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-
-function TaskListSkeleton() {
-  return (
-    <div className="space-y-4">
-      {[...Array(3)].map((_, i) => (
-        <Card key={i}>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-4">
-              <Skeleton className="h-4 w-4 rounded" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-              </div>
-              <Skeleton className="h-8 w-16" />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
+import { TodoList } from '@/components/todo-list'
+import { AddTodoForm } from '@/components/add-todo-form'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CheckSquare } from 'lucide-react'
+import { TodoListSkeleton } from '@/components/todo-list-skeleton'
 
 export default function HomePage() {
   return (
-    <div className="space-y-8">
+    <div className="max-w-2xl mx-auto space-y-8">
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center space-x-2">
+          <CheckSquare className="h-8 w-8 text-indigo-600" />
+          <h1 className="text-3xl font-bold text-gray-900">Todo App</h1>
+        </div>
+        <p className="text-gray-600">シンプルで使いやすいタスク管理アプリ</p>
+      </div>
+
       <Card>
         <CardHeader>
-          <CardTitle>新しいタスクを追加</CardTitle>
-          <CardDescription>
-            タイトルと説明を入力してタスクを作成してください。
-          </CardDescription>
+          <CardTitle className="text-lg">新しいタスクを追加</CardTitle>
         </CardHeader>
         <CardContent>
-          <AddTaskForm />
+          <AddTodoForm />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>タスクリスト</CardTitle>
-          <CardDescription>
-            すべてのタスクがここに表示されます。
-          </CardDescription>
+          <CardTitle className="text-lg">タスクリスト</CardTitle>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<TaskListSkeleton />}>
-            <TaskList />
+          <Suspense fallback={<TodoListSkeleton />}>
+            <TodoList />
           </Suspense>
         </CardContent>
       </Card>

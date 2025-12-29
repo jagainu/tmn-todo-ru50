@@ -1,41 +1,51 @@
+import { kv } from '@vercel/kv'
 import { NextRequest, NextResponse } from 'next/server'
-import { createTask, getTasks } from '@/lib/db'
+import { nanoid } from 'nanoid'
+
+export interface Task {
+  id: string
+  title: string
+  completed: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+const TASKS_KEY = 'todos'
 
 export async function GET() {
   try {
-    const tasks = await getTasks()
-    return NextResponse.json(tasks)
+    const tasks = await kv.get<Task[]>(TASKS_KEY) || []
+    return NextResponse.json({ tasks })
   } catch (error) {
-    console.error('Error getting tasks:', error)
-    return NextResponse.json(
-      { error: 'タスクの取得に失敗しました' },
-      { status: 500 }
-    )
+    console.error('Failed to fetch tasks:', error)
+    return NextResponse.json({ error: 'Failed to fetch tasks' }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { title, description } = await request.json()
+    const { title } = await request.json()
     
-    if (!title || typeof title !== 'string' || !title.trim()) {
-      return NextResponse.json(
-        { error: 'タイトルは必須です' },
-        { status: 400 }
-      )
+    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 })
     }
 
-    const task = await createTask(
-      title.trim(),
-      typeof description === 'string' ? description.trim() : ''
-    )
+    const tasks = await kv.get<Task[]>(TASKS_KEY) || []
     
-    return NextResponse.json(task, { status: 201 })
+    const newTask: Task = {
+      id: nanoid(),
+      title: title.trim(),
+      completed: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+
+    const updatedTasks = [newTask, ...tasks]
+    await kv.set(TASKS_KEY, updatedTasks)
+
+    return NextResponse.json({ task: newTask }, { status: 201 })
   } catch (error) {
-    console.error('Error creating task:', error)
-    return NextResponse.json(
-      { error: 'タスクの作成に失敗しました' },
-      { status: 500 }
-    )
+    console.error('Failed to create task:', error)
+    return NextResponse.json({ error: 'Failed to create task' }, { status: 500 })
   }
 }
